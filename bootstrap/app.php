@@ -21,6 +21,10 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->redirectGuestsTo(fn () => null);
+
+        $middleware->alias([
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
+    ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

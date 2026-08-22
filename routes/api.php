@@ -19,3 +19,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/v1/auth/me', [AuthController::class, 'me']);
     Route::post('/v1/auth/logout', [AuthController::class, 'logout']);
 });
+Route::middleware(['auth:sanctum', 'role:super_admin'])->get('/v1/auth/admin-test', function () {
+    return response()->json([
+        'message' => 'Welcome Super Admin!',
+    ]);
+});
