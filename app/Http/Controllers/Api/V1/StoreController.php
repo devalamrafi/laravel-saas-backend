@@ -11,7 +11,10 @@ class StoreController extends Controller
 {
         public function store(CreateStoreRequest $request)
         {
-            $store = Store::create($request->validated());
+            $store = Store::create([
+                ...$request->validated(),
+                'owner_id' => $request->user()->id,
+            ]);
 
             return response()->json([
                 'success' => true,

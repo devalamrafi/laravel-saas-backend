@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\StoreController;
+use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\V1\HealthController;
 use Illuminate\Support\Facades\Route;
@@ -12,7 +13,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/v1/health', [HealthController::class, 'index']);
-Route::post('/v1/stores', [StoreController::class, 'store']);
+Route::middleware(['auth:sanctum','role:store_owner,super_admin'])->post('/v1/stores', [StoreController::class, 'store']);
 Route::post('/v1/auth/register', [AuthController::class, 'register']);
 Route::post('/v1/auth/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
@@ -23,4 +24,7 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->get('/v1/auth/admin-tes
     return response()->json([
         'message' => 'Welcome Super Admin!',
     ]);
+});
+Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
+    Route::patch('/v1/users/{user}/role', [UserController::class, 'updateRole']);
 });
