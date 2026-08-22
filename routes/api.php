@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\StoreController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\V1\HealthController;
@@ -12,3 +13,4 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/v1/health', [HealthController::class, 'index']);
 Route::post('/v1/stores', [StoreController::class, 'store']);
+Route::post('/v1/auth/register', [AuthController::class, 'register']);
