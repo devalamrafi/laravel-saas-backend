@@ -28,3 +28,7 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->get('/v1/auth/admin-tes
 Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
     Route::patch('/v1/users/{user}/role', [UserController::class, 'updateRole']);
 });
+Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->get(
+    '/v1/my-stores',
+    [StoreController::class, 'index']
+);

@@ -18,6 +18,8 @@ class User extends Authenticatable
         return $this->hasMany(Store::class, 'owner_id');
     }
 
+    
+
     protected $fillable = [
         'name',
         'email',

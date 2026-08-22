@@ -22,4 +22,35 @@ class StoreController extends Controller
                 'data' => $store,
             ], 201);
         }
+
+        public function index(Request $request){
+            $query = $request->user()->stores();
+
+            if ($request->filled('search')) {
+                $search = $request->search;
+
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('slug', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+                });
+            }
+
+            if ($request->filled('status')) {
+                $query->where('status', $request->status);
+            }
+
+            $perPage = $request->integer('per_page', 10);
+
+            $stores = $query
+                ->latest()
+                ->paginate($perPage)
+                ->withQueryString();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Stores retrieved successfully.',
+                'data' => $stores,
+            ]);
+        }
 }
