@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\StoreAddressController;
 use App\Http\Controllers\Api\V1\StoreController;
 use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/v1/health', [HealthController::class, 'index']);
-Route::middleware(['auth:sanctum','role:store_owner,super_admin'])->post('/v1/stores', [StoreController::class, 'store']);
+
 Route::post('/v1/auth/register', [AuthController::class, 'register']);
 Route::post('/v1/auth/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
@@ -28,7 +29,36 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])->get('/v1/auth/admin-tes
 Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
     Route::patch('/v1/users/{user}/role', [UserController::class, 'updateRole']);
 });
+Route::middleware(['auth:sanctum','role:store_owner,super_admin'])->post('/v1/stores', [StoreController::class, 'store']);
 Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->get(
     '/v1/my-stores',
     [StoreController::class, 'index']
+);
+Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->get(
+    '/v1/my-stores/{store}',
+    [StoreController::class, 'show']
+);
+Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->patch(
+    '/v1/my-stores/{store}',
+    [StoreController::class, 'update']
+);
+Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->delete(
+    '/v1/my-stores/{store}',
+    [StoreController::class, 'destroy']
+);
+Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->post(
+    '/v1/my-stores/{store}/address',
+    [StoreAddressController::class, 'store']
+);
+Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->get(
+    '/v1/my-stores/{store}/address',
+    [StoreAddressController::class, 'show']
+);
+Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->patch(
+    '/v1/my-stores/{store}/address',
+    [StoreAddressController::class, 'update']
+);
+Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->delete(
+    '/v1/my-stores/{store}/address',
+    [StoreAddressController::class, 'destroy']
 );

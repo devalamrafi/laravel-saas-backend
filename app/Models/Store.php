@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Store extends Model
 {
@@ -24,4 +25,8 @@ class Store extends Model
         'banner',
         'status',
     ];
+
+    public function address(): HasOne{
+        return $this->hasOne(StoreAddress::class);
+    }
 }

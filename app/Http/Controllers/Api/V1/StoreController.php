@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Store\CreateStoreRequest;
+use App\Http\Requests\Store\UpdateStoreRequest;
 use App\Models\Store;
 use Illuminate\Http\Request;
 
@@ -51,6 +52,68 @@ class StoreController extends Controller
                 'success' => true,
                 'message' => 'Stores retrieved successfully.',
                 'data' => $stores,
+            ]);
+        }
+
+        public function show(Request $request, int $store){
+            $store = $request->user()
+                ->stores()
+                ->find($store);
+
+            if (!$store) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Store not found.',
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Store retrieved successfully.',
+                'data' => $store,
+            ]);
+        }
+
+        public function update(UpdateStoreRequest $request,int $store) {
+            $store = $request->user()
+                ->stores()
+                ->find($store);
+
+            if (!$store) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Store not found.',
+                ], 404);
+            }
+
+            $store->update($request->validated());
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Store updated successfully.',
+                'data' => $store->fresh(),
+            ]);
+        }
+
+        public function destroy(Request $request, int $store){
+            $store = $request->user()
+                ->stores()
+                ->find($store);
+
+            if (!$store) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Store not found.',
+                ], 404);
+            }
+
+            $store->update([
+                'status' => 'inactive',
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Store deactivated successfully.',
             ]);
         }
 }
