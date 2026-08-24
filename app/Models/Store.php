@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+
 class Store extends Model
 {
     public function owner(): BelongsTo
@@ -33,5 +34,9 @@ class Store extends Model
 
     public function products(): HasMany{
         return $this->hasMany(Product::class);
+    }
+
+    public function categories(): HasMany{
+        return $this->hasMany(Category::class);
     }
 }

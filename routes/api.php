@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\StoreAddressController;
 use App\Http\Controllers\Api\V1\StoreController;
@@ -87,4 +88,10 @@ Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->patch(
 Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->delete(
     '/v1/my-stores/{store}/products/{product}',
     [ProductController::class, 'destroy']
+);
+
+// Category routes
+Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->post(
+    '/v1/my-stores/{store}/categories',
+    [CategoryController::class, 'store']
 );
