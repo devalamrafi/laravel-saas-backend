@@ -95,3 +95,7 @@ Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->post(
     '/v1/my-stores/{store}/categories',
     [CategoryController::class, 'store']
 );
+Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->get(
+    '/v1/my-stores/{store}/categories',
+    [CategoryController::class, 'index']
+);
