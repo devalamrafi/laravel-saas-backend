@@ -28,6 +28,11 @@ class CreateCategoryRequest extends FormRequest
             'image' => ['nullable', 'string', 'max:500'],
 
             'is_active' => ['nullable', 'boolean'],
+            'category_id' => [
+                'required',
+                'integer',
+                'exists:categories,id',
+            ],
         ];
     }
 }

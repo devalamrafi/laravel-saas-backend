@@ -25,6 +25,16 @@ class ProductController extends Controller
             $request->validated()
         );
 
+        $category = $store->categories()
+            ->find($request->category_id);
+
+        if (!$category) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Category does not belong to this store.',
+            ], 422);
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Product created successfully.',
@@ -125,6 +135,18 @@ class ProductController extends Controller
             ], 404);
         }
 
+        if ($request->filled('category_id')) {
+            $category = $store->categories()
+                ->find($request->category_id);
+
+            if (!$category) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Category does not belong to this store.',
+                ], 422);
+            }
+        }
+
         $product->update($request->validated());
 
         return response()->json([
@@ -166,4 +188,6 @@ class ProductController extends Controller
             'data' => $product->fresh(),
         ]);
     }
+
+    
 }
