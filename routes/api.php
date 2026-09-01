@@ -96,6 +96,18 @@ Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->post(
     [CategoryController::class, 'store']
 );
 Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->get(
+    '/v1/my-stores/{store}/categories/{category}',
+    [CategoryController::class, 'show']
+);
+Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->get(
     '/v1/my-stores/{store}/categories',
     [CategoryController::class, 'index']
+);
+Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->patch(
+    '/v1/my-stores/{store}/categories/{category}',
+    [CategoryController::class, 'update']
+);
+Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->delete(
+    '/v1/my-stores/{store}/categories/{category}',
+    [CategoryController::class, 'destroy']
 );

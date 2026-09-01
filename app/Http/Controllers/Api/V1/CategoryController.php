@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CreateCategoryRequest;
+use App\Http\Requests\Category\UpdateCategoryRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -43,7 +44,38 @@ class CategoryController extends Controller
         ], 201);
     }
 
-    public function index(Request $request, $store){
+    public function show(Request $request, $store, $category)
+    {
+        $store = $request->user()
+            ->stores()
+            ->find($store);
+
+        if (!$store) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Store not found.',
+            ], 404);
+        }
+
+        $category = $store->categories()
+            ->find($category);
+
+        if (!$category) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Category not found.',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Category retrieved successfully.',
+            'data' => $category,
+        ]);
+    }
+
+    public function index(Request $request, $store)
+    {
         $store = $request->user()
             ->stores()
             ->find($store);
@@ -84,6 +116,72 @@ class CategoryController extends Controller
             'success' => true,
             'message' => 'Categories retrieved successfully.',
             'data' => $categories,
+        ]);
+    }
+
+    public function update(UpdateCategoryRequest $request, $store, $category)
+    {
+        $store = $request->user()
+            ->stores()
+            ->find($store);
+
+        if (!$store) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Store not found.',
+            ], 404);
+        }
+
+        $category = $store->categories()
+            ->find($category);
+
+        if (!$category) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Category not found.',
+            ], 404);
+        }
+
+        $category->update($request->validated());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Category updated successfully.',
+            'data' => $category->fresh(),
+        ]);
+    }
+
+    public function destroy(Request $request, $store, $category)
+    {
+        $store = $request->user()
+            ->stores()
+            ->find($store);
+
+        if (!$store) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Store not found.',
+            ], 404);
+        }
+
+        $category = $store->categories()
+            ->find($category);
+
+        if (!$category) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Category not found.',
+            ], 404);
+        }
+
+        $category->update([
+            'is_active' => false,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Category deactivated successfully.',
+            'data' => $category->fresh(),
         ]);
     }
 }
