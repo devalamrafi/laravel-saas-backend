@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\ProductController;
+use App\Http\Controllers\Api\V1\ProductImageController;
 use App\Http\Controllers\Api\V1\StoreAddressController;
 use App\Http\Controllers\Api\V1\StoreController;
 use App\Http\Controllers\Api\V1\UserController;
@@ -110,4 +111,16 @@ Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->patch(
 Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->delete(
     '/v1/my-stores/{store}/categories/{category}',
     [CategoryController::class, 'destroy']
+);
+Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->post(
+    '/v1/my-stores/{store}/products/{product}/images',
+    [ProductImageController::class, 'store']
+);
+Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->get(
+    '/v1/my-stores/{store}/products/{product}/images',
+    [ProductImageController::class, 'index']
+);
+Route::middleware(['auth:sanctum', 'role:store_owner,super_admin'])->delete(
+    '/v1/my-stores/{store}/products/{product}/images/{image}',
+    [ProductImageController::class, 'destroy']
 );
